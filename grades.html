@@ -63,11 +63,11 @@
     <p>Peter McGinley – University, A-Level, and GCSE Grades</p>
   </header>
   <main>
-    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search for module or subject...">
+    <input type="text" id="searchInput" onkeyup="filterAllTables()" placeholder="Search all academic results...">
 
     <section>
       <h2>University Modules</h2>
-      <table id="gradesTable">
+      <table class="searchable">
         <thead>
           <tr><th>Year</th><th>Module</th><th>Grade</th></tr>
         </thead>
@@ -87,28 +87,36 @@
 
     <section>
       <h2>A-Levels</h2>
-      <table>
-        <tr><th>Subject</th><th>Grade</th></tr>
-        <tr><td>Digital Technology</td><td>A*</td></tr>
-        <tr><td>Mathematics</td><td>C</td></tr>
-        <tr><td>Physics</td><td>B</td></tr>
+      <table class="searchable">
+        <thead>
+          <tr><th>Subject</th><th>Grade</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Digital Technology</td><td>A*</td></tr>
+          <tr><td>Mathematics</td><td>C</td></tr>
+          <tr><td>Physics</td><td>B</td></tr>
+        </tbody>
       </table>
     </section>
 
     <section>
       <h2>GCSEs</h2>
-      <table>
-        <tr><th>Subject</th><th>Grade</th></tr>
-        <tr><td>Biology</td><td>A</td></tr>
-        <tr><td>Chemistry</td><td>A</td></tr>
-        <tr><td>Digital Technology</td><td>A</td></tr>
-        <tr><td>English Language</td><td>B</td></tr>
-        <tr><td>French</td><td>C*</td></tr>
-        <tr><td>Further Mathematics</td><td>A</td></tr>
-        <tr><td>Mathematics</td><td>A</td></tr>
-        <tr><td>Physics</td><td>A</td></tr>
-        <tr><td>Religious Studies</td><td>A</td></tr>
-        <tr><td>Technology and Design</td><td>A</td></tr>
+      <table class="searchable">
+        <thead>
+          <tr><th>Subject</th><th>Grade</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Biology</td><td>A</td></tr>
+          <tr><td>Chemistry</td><td>A</td></tr>
+          <tr><td>Digital Technology</td><td>A</td></tr>
+          <tr><td>English Language</td><td>B</td></tr>
+          <tr><td>French</td><td>C*</td></tr>
+          <tr><td>Further Mathematics</td><td>A</td></tr>
+          <tr><td>Mathematics</td><td>A</td></tr>
+          <tr><td>Physics</td><td>A</td></tr>
+          <tr><td>Religious Studies</td><td>A</td></tr>
+          <tr><td>Technology and Design</td><td>A</td></tr>
+        </tbody>
       </table>
     </section>
 
@@ -116,23 +124,24 @@
   </main>
 
   <script>
-    function filterTable() {
-      const input = document.getElementById("searchInput");
-      const filter = input.value.toUpperCase();
-      const table = document.getElementById("gradesTable");
-      const trs = table.getElementsByTagName("tr");
+    function filterAllTables() {
+      const input = document.getElementById("searchInput").value.toUpperCase();
+      const tables = document.querySelectorAll("table.searchable tbody");
 
-      for (let i = 1; i < trs.length; i++) {
-        const tds = trs[i].getElementsByTagName("td");
-        let found = false;
-        for (let j = 0; j < tds.length; j++) {
-          if (tds[j] && tds[j].innerText.toUpperCase().includes(filter)) {
-            found = true;
-            break;
+      tables.forEach(tbody => {
+        const rows = tbody.getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+          const cells = rows[i].getElementsByTagName("td");
+          let match = false;
+          for (let j = 0; j < cells.length; j++) {
+            if (cells[j] && cells[j].innerText.toUpperCase().includes(input)) {
+              match = true;
+              break;
+            }
           }
+          rows[i].style.display = match ? "" : "none";
         }
-        trs[i].style.display = found ? "" : "none";
-      }
+      });
     }
   </script>
 </body>
